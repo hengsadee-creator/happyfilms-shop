@@ -1,50 +1,25 @@
-# Recovery checkpoint — 2026-11-02
+# Happyfilms checkpoint — 2026-11-02
+
+Production Worker release 1.2.3 is deployed. Release source commit: 0e13713d5a85fca92e8947c6e289eb12b7b62590. Production version ID: 9352e973-630c-4903-9b5c-5cb1351f7e0e (version 12). Deployment ID: 3eae4c8a-f1ff-43a0-a977-306a6aebb052.
 
 ## Completed
 
-- Read Cloudflare project, deployments, Worker source/settings/routes/cron and D1 schema using read-only queries (rows_written=0).
-- Captured original Worker deployment and D1 Time Travel bookmark in a private local manifest.
-- Backup commit: a21812591d4ec56a8b0b67d80630426fb2a5e85e on backup/automation-2026-11-02.
-- Working branch: recovery/happyfilms-2026-11-02. main is unchanged.
-- Observed real Pages storefront and custom-domain SMM catalogue in Cloud Browser; no orders submitted.
+- Recovered the exact deployed Worker, split six embedded client assets into maintainable sources, and preserved the baseline on backup/automation-2026-11-02, commit a21812591d4ec56a8b0b67d80630426fb2a5e85e. Original blob SHA f7369e83d61b4e6b77b51c66aef0c50f70face61 verified against recovered bytes.
+- Fixed decimal/quantity validation, idempotent intent and concurrent replay, safe GET-only retries, error correlation/CORS, SMM quote validation, uncertain submission recovery and supplier label decoding.
+- Full test suite: 45 passed, 0 failed, using local SQLite and synthetic providers. Independent review found two Important issues; actual modal/callback regressions reproduced them before fixes.
+- Browser completed a synthetic 3-item order at THB 282.15 through mock payment and delivery. Live read-only SMM quote returned THB 50 and numeric quantity/bounds. Live quantity zero was rejected and buying remained disabled; restoring 100 restored the THB 50 quote.
+- Live health confirmed 1.2.3, paymentMethods=[], inventoryEncryption=true. All nine existing bindings/non-secret config and runtime settings were preserved. No real purchase, customer edit, secret/DNS change, database migration or heng-ai edit occurred.
+- Initial 1.2.1 live screenshot exposed nested-card CSS contrast. Restored the prior code version temporarily; corrected the fixture to match actual nesting and applied follow-up card/price-summary fixes. Recovery did not restore or delete database data.
+- Preview is isolated, synthetic only: https://d71e9c9c.happyfilms-shop.pages.dev . Pages production remains a5d40b98-2f6a-4955-ae96-ee8537d54554. The preview is not a replacement production storefront.
 
-## Decisions
+## Outstanding
 
-- Work inline in a dedicated recovered checkout because the Git repositories contain no application and shell network access is restricted. Synchronize through the GitHub connector.
-- Retain Pages/Worker architecture and the manual checkout; do not substitute a newly built production store.
-- Extract embedded JavaScript only to make the existing deployed code maintainable and testable.
-- Treat missing Pages Functions source as a blocker to certifying supplier fulfillment and legacy server idempotency.
-- The user explicitly authorizes implementation and preview work now; the approval gate is production deployment.
+- Original Pages Functions/server source remains unrecovered. Both named repositories originally had README only; no additional branches existed. Recover the original upload workspace/export before certifying provider adapters, legacy order idempotency, private admin flows or supplier fulfillment.
+- The live custom-domain Worker patches do not cover direct pages.dev access. No DNS/origin changes were authorized or made.
+- Required automatic payment credentials remain absent; automatic stock/orders/payments were zero when inspected. Retain the existing manual workflow; do not promise fully automatic delivery.
+- Do not submit real orders, use money, alter secrets/DNS or restore D1 without separate authorization. User authorized production deployment of tested fixes while asleep, then requested reduced quota use.
+- Free existing services were used; no purchases/upgrades were made. External payment/provider costs and stability are not guaranteed.
 
-## Next
+## Rollback
 
-Execute docs/recovery-plan.md, recording real test results and remaining blockers here. No production mutation is authorized.
-
-## Updated authorization
-
-The user subsequently instructed: “ทำเสร็จแล้ว ดีพรอยเลยนะ ฉันนอนก่อน”. Production deployment of the finished, tested fixes is now authorized. Existing prohibitions on real-money test orders, secret changes, DNS changes, customer-data edits, paid services and heng-ai remain in force. Release only the verified Worker changes, preserve Pages and all bindings, then verify the live UI and retain rollback.
-
-## Verified implementation
-
-- Original Worker baseline: 26 tests, 14 failures and 12 passes.
-- Fixed Worker plus shared browser helpers: 39 tests passed, 0 failed.
-- Recovered code retains the existing routes, D1 schema and manual order workflow.
-- No production deployments or data writes have occurred yet.
-
-## Final review and corrections
-
-- Fresh read-only review found no Critical issues and two Important issues: null order response unlocked a repeat POST; actual checkout modal bypassed strict quote validation.
-- Added production-callback/modal integration tests, reproduced both failures, and fixed them. Also reproduced and removed floating-point addition from checkout totals.
-- Final suite: 45 tests passed, 0 failed. All server tests use local SQLite and synthetic provider responses.
-- Verified original backup blob SHA f7369e83d61b4e6b77b51c66aef0c50f70face61 matches the exact recovered deployment bytes.
-- Preview deployment dc7f9b4f-bab5-441c-8a85-92c0d03b891b is environment=preview; Pages production deployment remains a5d40b98-2f6a-4955-ae96-ee8537d54554.
-- Browser completed synthetic 3-item checkout at THB 282.15 through mock payment confirmation and delivery. No real money or provider order was used.
-- SMM preview had no horizontal overflow at iframe widths 360/390/768/1280. The shop had a 3px overflow at 360; reduced the preview navigation spacing and scheduled a targeted recheck.
-- Read-only live quote contract verified: quantity is a JSON number; price=50 THB, provider bounds 10–5,000,000 for the selected published service. This does not certify fulfillment.
-
-## Production smoke test and correction
-
-- Uploaded version 10 (eae65fdb-01e0-461d-ae60-075b03dbdd6d) without traffic, verified every binding and runtime setting, then deployed as authorized. Live health returned 1.2.1 and the SMM quote/label fix worked.
-- The live screenshot revealed a contrast regression: the real `#socialOrderPanel` wraps an inner `.sh-panel-card`; the initial preview used the ID on the card itself. The inherited dark inner background remained while overlay text became dark.
-- Immediately restored prior version 9 by code-only deployment dceeb1aa-35f1-4aae-9a5a-4c6ea72f3f57. No database restore, secret or DNS change occurred.
-- Corrected the nested-card/control CSS and changed the preview to match the actual nesting. Rebuilt as 1.2.2; all 45 tests still pass. Recheck preview colors and the live screenshot before declaring release verified.
+Deploy prior Worker version 1f8f4370-c319-469a-a9a4-5dd90040d4ef at 100% if necessary. Preserve bindings/routes/cron. Do not restore D1 for routine code rollback. A private D1 Time Travel bookmark/schema snapshot exists outside this public repository.
