@@ -4,3 +4,4 @@
 @media(max-width:400px){.top nav{gap:10px;font-size:11px}.brand>span{font-size:16px}}
 
 .sh-panel-shell>.sh-panel-card{background:#132742;color:#fff}.sh-panel-card .sh-panel-field select,.sh-panel-card .sh-panel-field input{background:#0b1526;color:#fff}
+.hero>*{min-width:0}
