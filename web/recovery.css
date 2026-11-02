@@ -7,6 +7,10 @@ html{scroll-padding-top:92px}body{overflow-wrap:break-word}button,input,select,t
 #socialOrderPanel :where(h2,h3,label){color:var(--hf-ink)}#socialOrderPanel :where(p,small,.sh-panel-status){color:var(--hf-muted)}
 #socialOrderPanel :where(input,select){background:#f9fbff;color:var(--hf-ink);border:1px solid #bdcce0;border-radius:12px;min-height:50px;padding:12px}
 #socialOrderPanel :where(input,select):disabled{background:#eef2f7;color:#52647a}#socialOrderPanel :where(input)::placeholder{color:#65768c}
+#socialOrderPanel .sh-panel-card{background:#fff!important;color:var(--hf-ink);border:1px solid var(--hf-line);border-radius:20px}
+#socialOrderPanel .sh-panel-field :is(input,select){background:#f9fbff!important;color:var(--hf-ink)!important;border-color:#bdcce0!important}
+#socialOrderPanel .sh-panel-field :is(input,select):disabled{background:#eef2f7!important;color:#52647a!important}
+#socialOrderPanel .sh-panel-heading :is(p,.eyebrow){color:var(--hf-muted)!important}
 #socialOrderPanel .sh-panel-grid{gap:20px}#socialOrderPanel .sh-panel-grid>*{min-width:0}#socialOrderPanel select{overflow:hidden;text-overflow:ellipsis}
 #socialOrderPanel #shMatchCount{color:var(--hf-muted)}#socialOrderPanel details>summary{color:#1656a7;min-height:44px}
 #socialOrderPanel #shDetails{background:var(--hf-soft);padding:14px;border-radius:12px;line-height:1.8}

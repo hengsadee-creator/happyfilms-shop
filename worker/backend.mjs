@@ -141,7 +141,7 @@ async function handle(req,env,ctx,requestId){const url=new URL(req.url),p=url.pa
  if(p==='/assets/hf-automation.js')return new Response(storefrontScript,{headers:{'content-type':'text/javascript; charset=utf-8','cache-control':'no-cache'}});
  if(p==='/assets/hf-stock-admin.js')return new Response(adminScript,{headers:{'content-type':'text/javascript; charset=utf-8','cache-control':'no-store'}});
  if(p==='/automation-stock')return new Response(adminPage,{headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store','referrer-policy':'no-referrer'}});
- if(p==='/api/automation/health')return json({ok:true,version:'1.2.1',salesAssistant:!!env.AI,mode:'live',paymentMethods:methods(env),inventoryEncryption:!!env.INVENTORY_KEY});
+ if(p==='/api/automation/health')return json({ok:true,version:'1.2.2',salesAssistant:!!env.AI,mode:'live',paymentMethods:methods(env),inventoryEncryption:!!env.INVENTORY_KEY});
  const owned=p==='/api/orders'||p.startsWith('/api/orders/')||p==='/api/webhook/payment'||p.startsWith('/api/stock/')||p==='/api/automation/catalog'||p==='/api/automation/events'||p==='/api/assistant/chat';
  if(owned){
   if(req.headers.get('origin'))check(req.headers.get('origin')===env.PUBLIC_ORIGIN,'Invalid origin',403);

@@ -41,3 +41,10 @@ The user subsequently instructed: “ทำเสร็จแล้ว ดีพ
 - Browser completed synthetic 3-item checkout at THB 282.15 through mock payment confirmation and delivery. No real money or provider order was used.
 - SMM preview had no horizontal overflow at iframe widths 360/390/768/1280. The shop had a 3px overflow at 360; reduced the preview navigation spacing and scheduled a targeted recheck.
 - Read-only live quote contract verified: quantity is a JSON number; price=50 THB, provider bounds 10–5,000,000 for the selected published service. This does not certify fulfillment.
+
+## Production smoke test and correction
+
+- Uploaded version 10 (eae65fdb-01e0-461d-ae60-075b03dbdd6d) without traffic, verified every binding and runtime setting, then deployed as authorized. Live health returned 1.2.1 and the SMM quote/label fix worked.
+- The live screenshot revealed a contrast regression: the real `#socialOrderPanel` wraps an inner `.sh-panel-card`; the initial preview used the ID on the card itself. The inherited dark inner background remained while overlay text became dark.
+- Immediately restored prior version 9 by code-only deployment dceeb1aa-35f1-4aae-9a5a-4c6ea72f3f57. No database restore, secret or DNS change occurred.
+- Corrected the nested-card/control CSS and changed the preview to match the actual nesting. Rebuilt as 1.2.2; all 45 tests still pass. Recheck preview colors and the live screenshot before declaring release verified.
