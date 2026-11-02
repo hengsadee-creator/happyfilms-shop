@@ -1,0 +1,8 @@
+node_modules/
+.env
+.env.*
+.dev.vars*
+private/
+test-results/
+preview.bundle.mjs
+*.sqlite
