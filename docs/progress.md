@@ -1,25 +1,29 @@
 # Happyfilms checkpoint — 2026-11-02
 
-Production Worker release 1.2.3 is deployed. Release source commit: 0e13713d5a85fca92e8947c6e289eb12b7b62590. Production version ID: 9352e973-630c-4903-9b5c-5cb1351f7e0e (version 12). Deployment ID: 3eae4c8a-f1ff-43a0-a977-306a6aebb052.
+Current production: **1.2.2**, Worker version **bdc0aec0-eaad-4ab2-8ace-2f281bfd84f0**. Active restoration deployment: **69472c06-3c4e-4908-97e7-1fe607b0ec30**. Verified source: **f9654d236a54af6c29cb744da067417d75ddf2f0**.
 
-## Completed
+## Delivered
+- Recovered the complete deployed Worker and six embedded client assets. Baseline backup: backup/automation-2026-11-02, commit a21812591d4ec56a8b0b67d80630426fb2a5e85e. Exact original blob f7369e83d61b4e6b77b51c66aef0c50f70face61 was verified.
+- Added strict integer-satang calculations, numeric quantity validation, idempotent intent matching/concurrent replay, bounded GET-only retries, safe errors/CORS/request IDs, readable supplier labels, quote validation and persistent uncertain-submit handling.
+- 45 tests passed using local SQLite, synthetic providers, and actual checkout modal/submission callbacks. Independent review findings were reproduced and fixed.
+- Synthetic browser checkout completed at THB 282.15. Live read-only quote returned THB 50 with numeric quantity and provider bounds. Live quantity zero was rejected; restoring 100 restored THB 50.
+- All nine bindings and runtime configuration were preserved. No real purchase/payment, customer edit, secret/DNS change, DB migration or heng-ai modification.
+- Isolated mock preview: https://d71e9c9c.happyfilms-shop.pages.dev/qa . Original Pages production deployment remains a5d40b98-2f6a-4955-ae96-ee8537d54554.
+- PR #1 holds the source and documentation; main has not been merged.
 
-- Recovered the exact deployed Worker, split six embedded client assets into maintainable sources, and preserved the baseline on backup/automation-2026-11-02, commit a21812591d4ec56a8b0b67d80630426fb2a5e85e. Original blob SHA f7369e83d61b4e6b77b51c66aef0c50f70face61 verified against recovered bytes.
-- Fixed decimal/quantity validation, idempotent intent and concurrent replay, safe GET-only retries, error correlation/CORS, SMM quote validation, uncertain submission recovery and supplier label decoding.
-- Full test suite: 45 passed, 0 failed, using local SQLite and synthetic providers. Independent review found two Important issues; actual modal/callback regressions reproduced them before fixes.
-- Browser completed a synthetic 3-item order at THB 282.15 through mock payment and delivery. Live read-only SMM quote returned THB 50 and numeric quantity/bounds. Live quantity zero was rejected and buying remained disabled; restoring 100 restored the THB 50 quote.
-- Live health confirmed 1.2.3, paymentMethods=[], inventoryEncryption=true. All nine existing bindings/non-secret config and runtime settings were preserved. No real purchase, customer edit, secret/DNS change, database migration or heng-ai edit occurred.
-- Initial 1.2.1 live screenshot exposed nested-card CSS contrast. Restored the prior code version temporarily; corrected the fixture to match actual nesting and applied follow-up card/price-summary fixes. Recovery did not restore or delete database data.
-- Preview is isolated, synthetic only: https://d71e9c9c.happyfilms-shop.pages.dev . Pages production remains a5d40b98-2f6a-4955-ae96-ee8537d54554. The preview is not a replacement production storefront.
-
-## Outstanding
-
-- Original Pages Functions/server source remains unrecovered. Both named repositories originally had README only; no additional branches existed. Recover the original upload workspace/export before certifying provider adapters, legacy order idempotency, private admin flows or supplier fulfillment.
-- The live custom-domain Worker patches do not cover direct pages.dev access. No DNS/origin changes were authorized or made.
-- Required automatic payment credentials remain absent; automatic stock/orders/payments were zero when inspected. Retain the existing manual workflow; do not promise fully automatic delivery.
-- Do not submit real orders, use money, alter secrets/DNS or restore D1 without separate authorization. User authorized production deployment of tested fixes while asleep, then requested reduced quota use.
-- Free existing services were used; no purchases/upgrades were made. External payment/provider costs and stability are not guaranteed.
+## Release qualification and remaining work
+- Final cosmetic candidate 1.2.3 showed an SMM asset SyntaxError in the browser despite local parsing succeeding. Restored the previously browser-verified 1.2.2 and returned this branch's source to that verified revision. Candidate commits remain in history. Do not reactivate 1.2.3 without comparing served-asset bytes/checksums and reproducing the browser result.
+- Remaining minor UI issues: the legacy dark price-summary panel needs a verified contrast update; the mock shop preview has approximately 3px horizontal overflow at a 360px iframe. SMM preview had no overflow at 360/390/768/1280.
+- Original Pages Functions/server source is still missing. Both named repos originally contained README only; no other branches existed. Recover the original direct-upload workspace before certifying legacy server idempotency, admin/private flows, SocialHub/BYShop adapters and fulfillment.
+- Direct pages.dev access bypasses Worker patches. No routing/DNS changes were made.
+- Automatic payment credentials remain absent and automatic stock/orders/payments were zero at inspection. Keep the existing manual workflow; automatic delivery is not ready.
+- Supplier documentation/definitive adapter URL and real fulfillment are not verified. Artificial follower services may violate platform policies; no permanent engagement or external-provider stability is guaranteed.
+- User authorized deployment while asleep, then requested reduced quota use. Further cosmetic experiments were stopped in favor of the verified version. No services were purchased/upgraded.
 
 ## Rollback
+Prior baseline Worker version: 1f8f4370-c319-469a-a9a4-5dd90040d4ef, deploy at 100% if necessary. Preserve bindings/routes/cron. Do not restore D1 for routine code rollback. A private schema/Time Travel bookmark was recorded; it is not a full customer-data export.
 
-Deploy prior Worker version 1f8f4370-c319-469a-a9a4-5dd90040d4ef at 100% if necessary. Preserve bindings/routes/cron. Do not restore D1 for routine code rollback. A private D1 Time Travel bookmark/schema snapshot exists outside this public repository.
+## Resume
+1. Start from production/source 1.2.2 above; read docs/findings.md and docs/deploy-and-rollback.md.
+2. Recover the original Pages Functions source; do not build a replacement store on assumptions.
+3. Verify the served SMM asset before any cosmetic re-release. Keep real-order/money/secret/DNS/database restoration changes behind separate authorization.
