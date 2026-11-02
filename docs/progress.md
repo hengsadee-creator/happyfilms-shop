@@ -27,3 +27,15 @@ Prior baseline Worker version: 1f8f4370-c319-469a-a9a4-5dd90040d4ef, deploy at 1
 1. Start from production/source 1.2.2 above; read docs/findings.md and docs/deploy-and-rollback.md.
 2. Recover the original Pages Functions source; do not build a replacement store on assumptions.
 3. Verify the served SMM asset before any cosmetic re-release. Keep real-order/money/secret/DNS/database restoration changes behind separate authorization.
+
+
+## หยุดงานตามคำสั่งผู้ใช้ — 2 พฤศจิกายน 2026
+
+- หยุดแก้โค้ดและหยุด deploy แล้ว เก็บเฉพาะ checkpoint นี้
+- ตรวจแบบอ่านอย่างเดียวยืนยันว่า production ยังเป็น Worker 1.2.2 / version bdc0aec0-eaad-4ab2-8ace-2f281bfd84f0 ที่ 100% (deployment 69472c06-3c4e-4908-97e7-1fe607b0ec30)
+- UI ใหม่ที่อ้างอิง Stripe Checkout และหลักการจัดลำดับ/ระยะห่างของ Linear ถูกเขียนไว้แล้ว: header สีขาว, hero ฟ้าอ่อน, การ์ดสินค้า/ราคา/ปุ่มสั่งซื้อชัดเจน, responsive มือถือ, แก้สีส่วนสรุปราคา โดยไม่เปลี่ยน API/checkout handlers
+- UI candidate 1.2.4 อยู่บน branch recovery/happyfilms-2026-11-02 ที่ commit 0efff6d3596e98df64e6f531857fe3fb00c0aa75 และ PR #1 แต่ยังไม่มีผลยืนยัน deploy สำเร็จ คำตอบเครื่องมือรอบล่าสุดไม่ใช่ JSON จึงห้ามอ้างว่าขึ้น production แล้ว
+- candidate ผ่าน syntax check ของ Worker และ JavaScript ที่ฝังไว้ 3 ชุด; ยังไม่ได้ตรวจ UI จริงหลัง deploy ชุดใหม่นี้ ชุดทดสอบ logic เดิมผ่าน 45 กรณี
+- checksum ของ source candidate: FNV-1a 2774643730, ความยาว 122752 ตัวอักษร แบ่งส่ง 62 ชิ้น เพื่อให้ตรวจความครบถ้วนก่อน/หลังอัปโหลด ห้าม activate จน checksum ของ source ที่ดาวน์โหลดกลับมาตรงกัน และ bindings เดิมครบ
+- ไฟล์ในเครื่องที่แก้ล่าสุด: web/recovery.css, worker/backend.mjs, worker/worker.mjs (มีสำเนาใน GitHub commit ข้างต้นแล้ว)
+- เมื่อต่อ: อ่าน checkpoint นี้และ PR ก่อน ตรวจ active deployment/versions ใหม่ แล้วทดสอบ candidate ใน Preview โดยรักษา production 1.2.2 ไว้จนกว่าจะผ่าน ห้ามสั่งซื้อจริง ใช้เงินจริง เปลี่ยน Secret/DNS หรือแก้ข้อมูลลูกค้า
